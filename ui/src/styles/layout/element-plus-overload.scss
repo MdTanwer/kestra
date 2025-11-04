@@ -23,6 +23,7 @@
         --el-button-bg-color: var(--ks-button-background-primary);
         --el-button-border-color: var(--ks-button-background-primary);
         --el-button-hover-bg-color: var(--ks-button-background-primary-hover);
+        --el-button-hover-border-color: var(--ks-button-background-primary-hover);
         --el-button-active-bg-color: var(--ks-button-background-primary-active);
         --el-button-disabled-text-color: var(--ks-content-inactive);
         --el-button-disabled-bg-color: var(--ks-button-background-inactive);
@@ -41,10 +42,43 @@
     }
 
     &.el-button--success {
+        --el-button-text-color: var(--ks-button-content-primary);
+        --el-button-hover-text-color: var(--ks-button-content-primary);
         --el-button-bg-color: var(--ks-button-background-success);
         --el-button-border-color: var(--ks-button-background-success);
         --el-button-hover-bg-color: var(--ks-button-background-success-hover);
+        --el-button-hover-border-color: var(--ks-button-background-success-hover);
         --el-button-active-bg-color: var(--ks-button-background-success-active);
+    }
+
+    &.el-button--warning {
+        --el-button-text-color: var(--ks-button-content-primary);
+        --el-button-hover-text-color: var(--ks-button-content-primary);
+        --el-button-bg-color: var(--ks-button-background-warning);
+        --el-button-border-color: var(--ks-button-background-warning);
+        --el-button-hover-bg-color: var(--ks-button-background-warning-hover);
+        --el-button-hover-border-color: var(--ks-button-background-warning-hover);
+        --el-button-active-bg-color: var(--ks-button-background-warning-active);
+    }
+
+    &.el-button--danger {
+        --el-button-text-color: var(--ks-button-content-primary);
+        --el-button-hover-text-color: var(--ks-button-content-primary);
+        --el-button-bg-color: var(--ks-button-background-danger);
+        --el-button-border-color: var(--ks-button-background-danger);
+        --el-button-hover-bg-color: var(--ks-button-background-danger-hover);
+        --el-button-hover-border-color: var(--ks-button-background-danger-hover);
+        --el-button-active-bg-color: var(--ks-button-background-danger-active);
+    }
+
+    &.el-button--info {
+        --el-button-text-color: var(--ks-button-content-primary);
+        --el-button-hover-text-color: var(--ks-button-content-primary);
+        --el-button-bg-color: var(--ks-button-background-info);
+        --el-button-border-color: var(--ks-button-background-info);
+        --el-button-hover-bg-color: var(--ks-button-background-info-hover);
+        --el-button-hover-border-color: var(--ks-button-background-info-hover);
+        --el-button-active-bg-color: var(--ks-button-background-info-active);
     }
 
     .el-input-group--append & [class*=el-icon] + span {
@@ -734,7 +768,7 @@ form.ks-horizontal {
         border: 1px solid var(--ks-border-primary);
         background: var(--ks-dropdown-background);
         box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
-        
+
         .el-popper__arrow::before {
             border: 1px solid var(--ks-border-primary);
             background-color: var(--ks-dropdown-background);
@@ -1120,11 +1154,11 @@ form.ks-horizontal {
     height: 62px;
     width: 62px;
 
-    .el-dialog__close { 
-       
-        color: var(--ks-dialog-headerbtn) !important; 
-        
-       
+    .el-dialog__close {
+
+        color: var(--ks-dialog-headerbtn) !important;
+
+
         &:hover {
             color: var(--ks-dialog-headerbtn-hover) !important;
         }
