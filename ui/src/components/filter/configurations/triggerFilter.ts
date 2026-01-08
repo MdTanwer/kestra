@@ -41,9 +41,9 @@ export const useTriggerFilter = (): ComputedRef<FilterConfiguration> => {
                                             return [...current, `${(previousCombination ? previousCombination + "." : "")}${part}`];
                                         }, []);
                                     }))].map(namespace => ({
-                                    label: namespace,
-                                    value: namespace
-                                }));
+                                        label: namespace,
+                                        value: namespace
+                                    }));
                             }
                             return [];
                         },
@@ -118,6 +118,16 @@ export const useTriggerFilter = (): ComputedRef<FilterConfiguration> => {
                     searchable: true,
                 },
                 {
+                    key: "source",
+                    label: t("filter.source.label"),
+                    description: t("filter.source.description"),
+                    comparators: [
+                        Comparators.EQUALS,
+                    ],
+                    valueType: "text",
+                    searchable: true
+                },
+                {
                     key: "triggerState",
                     label: t("filter.triggerState.label"),
                     description: t("filter.triggerState.description"),
@@ -131,6 +141,9 @@ export const useTriggerFilter = (): ComputedRef<FilterConfiguration> => {
                         return VALUES.TRIGGER_STATES;
                     }
                 }
+
+
+
             ]
         };
     });
