@@ -1,50 +1,40 @@
 <template>
-    <!-- Split Button Container -->
     <div class="button-with-dropdown" :class="{'split-button': showDropdownIcon && validDropdownItems.length > 0}">
-        <!-- Primary Button -->
         <el-button
-            :type="primaryButtonType"
+            :type="type"
             :size="size"
             :loading="loading"
             :disabled="disabled"
-            :icon="primaryIcon"
-            :class="buttonClass"
-            :aria-label="primaryText || 'Primary action'"
+            :icon="icon"
+            :aria-label="text"
             @click="onPrimaryClick"
         >
-            <span v-if="$slots.primaryText || primaryText">
-                <slot name="primaryText">{{ primaryText }}</slot>
-            </span>
+            <span v-if="text">{{ text }}</span>
         </el-button>
 
-        <!-- Dropdown Button (only shown if there are dropdown items) -->
+
         <el-dropdown
             v-if="showDropdownIcon && validDropdownItems.length > 0"
-            :trigger="trigger"
-            :placement="placement"
             :disabled="disabled"
             :hideOnClick="hideOnClick"
             aria-haspopup="menu"
             @visible-change="onVisibleChange"
-            @command="onCommand"
         >
             <el-button
-                :type="primaryButtonType"
+                :type="type"
                 :size="size"
                 :disabled="disabled"
                 class="dropdown-toggle"
-                :aria-label="`${primaryText || 'Actions'} dropdown menu`"
+                :aria-label="`${text} dropdown menu`"
                 :aria-expanded="dropdownVisible.toString()"
             >
                 <el-icon class="el-icon--right">
-                    <ArrowDown />
+                    <component :is="dropdownIcon" />
                 </el-icon>
             </el-button>
 
-            <!-- Dropdown Menu -->
             <template #dropdown>
-                <el-dropdown-menu :class="menuClass">
-                    <!-- Dropdown Items -->
+                <el-dropdown-menu>
                     <el-dropdown-item
                         v-for="item in validDropdownItems"
                         :key="item.command"
@@ -54,16 +44,8 @@
                         :divided="item.divided"
                         @click="onItemClick(item)"
                     >
-                        <span v-if="item.label">{{ item.label }}</span>
-                        <slot 
-                            v-else 
-                            :name="`item-${item.command}`"
-                            v-bind="{item}"
-                        />
+                        {{ item.label }}
                     </el-dropdown-item>
-
-                    <!-- Custom Slot for Dropdown Items -->
-                    <slot name="dropdownItems" />
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
@@ -72,9 +54,9 @@
 
 <script setup lang="ts">
     import {computed, ref} from "vue";
-    import {ArrowDown} from "@element-plus/icons-vue";
+    import {ArrowDown, ArrowUp} from "@element-plus/icons-vue";
 
-    // Types
+
     interface DropdownItem {
         command: string;
         label?: string;
@@ -84,38 +66,26 @@
         action?: (item: DropdownItem) => void;
     }
 
-    // Props
+
     interface Props {
-        // Primary Button Props
-        primaryText?: string;
-        primaryButtonType?: "primary" | "success" | "warning" | "danger" | "info" | "default";
-        primaryIcon?: any;
-        primaryAction?: () => void;
-    
-        // Dropdown Props
+        text?: string;
+        type?: "primary" | "success" | "warning" | "danger" | "info" | "default";
+        icon?: any;
+        action?: () => void;
         dropdownItems?: DropdownItem[];
-        trigger?: "click" | "hover" | "contextmenu";
-        placement?: string;
         hideOnClick?: boolean;
         showDropdownIcon?: boolean;
-    
-        // Common Props
         size?: "large" | "default" | "small";
         loading?: boolean;
         disabled?: boolean;
-    
-        // Styling Props
-        buttonClass?: string | string[] | object;
-        menuClass?: string | string[] | object;
     }
 
-    // Prop validation function
     const validateDropdownItems = (items: DropdownItem[]) => {
         if (!Array.isArray(items)) {
             console.warn("ButtonWithDropdown: dropdownItems must be an array");
             return [];
         }
-    
+
         return items.filter((item, index) => {
             if (!item.command) {
                 console.warn(`ButtonWithDropdown: dropdown item at index ${index} missing required 'command' property`);
@@ -126,28 +96,24 @@
     };
 
     const props = withDefaults(defineProps<Props>(), {
-        primaryButtonType: "primary",
-        trigger: "click",
-        placement: "bottom",
+        type: "primary",
         hideOnClick: true,
         showDropdownIcon: true,
         size: "default",
         loading: false,
         disabled: false,
-        dropdownItems: () => [],
-        buttonClass: "",
-        menuClass: ""
+        dropdownItems: () => []
     });
 
-    // Computed property for validated dropdown items
     const validDropdownItems = computed(() => validateDropdownItems(props.dropdownItems));
 
-    // Emits
+
+    const dropdownIcon = computed(() => dropdownVisible.value ? ArrowUp : ArrowDown);
+
     interface Emits {
         (e: "primary-click"): void;
         (e: "item-click", item: DropdownItem): void;
         (e: "visible-change", visible: boolean): void;
-        (e: "command", command: string): void;
     }
 
     const emit = defineEmits<Emits>();
@@ -155,8 +121,8 @@
     const dropdownVisible = ref(false);
 
     const onPrimaryClick = () => {
-        if (props.primaryAction) {
-            props.primaryAction();
+        if (props.action) {
+            props.action();
         }
         emit("primary-click");
     };
@@ -173,9 +139,7 @@
         emit("visible-change", visible);
     };
 
-    const onCommand = (command: string) => {
-        emit("command", command);
-    };
+
 </script>
 
 <style scoped lang="scss">
@@ -190,7 +154,7 @@
                 border-bottom-right-radius: 0;
                 border-right: 1px solid var(--el-button-border-color, var(--ks-border-primary));
 
-                // Hide border when disabled
+
                 &.is-disabled {
                     border-right: none;
                 }
@@ -231,7 +195,7 @@
                 &.dropdown-toggle.is-disabled,
                 &.el-button.is-disabled {
                     border-left: none;
-                    
+
                     &::before {
                         display: none;
                     }
@@ -240,7 +204,7 @@
         }
     }
 
-    // When not in split mode, show as regular button
+    
     &:not(.split-button) {
         .el-button {
             .el-icon.el-icon--right {
@@ -250,28 +214,28 @@
     }
 }
 
-           
+
 .button-with-dropdown {
     .el-button.is-disabled {
         opacity: 0.6;
         cursor: not-allowed;
         pointer-events: none;
     }
-    
+
     &.split-button {
         .el-button {
             &:first-child.is-disabled {
                 border-right: none;
             }
-            
+
             &.dropdown-toggle.is-disabled {
                 border-left: none;
-                
+
                 &::before {
                     display: none;
                 }
             }
-            
+
             &.is-disabled + .el-dropdown .el-button {
                 opacity: 0.6;
                 cursor: not-allowed;
@@ -283,17 +247,17 @@
 
 .el-dropdown-menu {
     min-width: 160px;
-    
+
     .el-dropdown-menu__item {
         display: flex;
         align-items: center;
         gap: var(--spacing-xs, 4px);
-        
+
         &.is-disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
-        
+
         .el-icon {
             font-size: 14px;
         }
