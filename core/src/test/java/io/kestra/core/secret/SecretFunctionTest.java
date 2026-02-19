@@ -119,6 +119,20 @@ public class SecretFunctionTest {
         assertThat(exception.getMessage()).isEqualTo("Cannot find secret for key 'unknown_secret_key'.");
     }
 
+    @Test
+    void shouldGetSecretWithPebbleDelimiters() throws IllegalVariableEvaluationException {
+        Map<String, Object> context = Map.of(
+            "flow", Map.of("namespace", "io.kestra.unittest")
+        );
+
+        assertThat(variableRenderer.render("{{ secret('pebble-comment-secret') }}", context))
+            .isEqualTo("test_secret_with_pebble_comment_{#asd");
+        assertThat(variableRenderer.render("{{ secret('pebble-tag-secret') }}", context))
+            .isEqualTo("secret_with_{%tag");
+        assertThat(variableRenderer.render("{{ secret('pebble-expression-secret') }}", context))
+            .isEqualTo("secret_with_{{expression");
+    }
+
     @MockBean(SecretService.class)
     public static class TestSecretService extends SecretService {
 
@@ -132,7 +146,10 @@ public class SecretFunctionTest {
                 "object": {"f1": "value1", "f2": "value2"}
                 }
                 """,
-            "io.kestra.unittest.string-secret", "string-value"
+            "io.kestra.unittest.string-secret", "string-value",
+            "io.kestra.unittest.pebble-tag-secret", "secret_with_{%tag",
+            "io.kestra.unittest.pebble-expression-secret", "secret_with_{{expression",
+            "io.kestra.unittest.pebble-comment-secret", "test_secret_with_pebble_comment_{#asd"
         );
         public String findSecret(String tenantId, String namespace, String key) throws SecretNotFoundException, IOException {
             Optional<String> optional = Optional.ofNullable(SECRETS.get(namespace + "." + key));

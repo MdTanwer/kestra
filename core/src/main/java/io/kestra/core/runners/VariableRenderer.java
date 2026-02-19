@@ -69,6 +69,10 @@ public class VariableRenderer {
             return null;
         }
 
+        if (inline instanceof SecretValue secretValue) {
+            return secretValue.getValue();
+        }
+
         if (inline instanceof String inlineStr && inlineStr.indexOf('{') == -1) {
             // it's not a Pebble template so we short-circuit rendering
             return inline;
@@ -158,6 +162,11 @@ public class VariableRenderer {
         }
 
         Object result = this.renderOnce(inline, variables, stringify);
+
+        if (result instanceof SecretValue secretValue) {
+            return secretValue.getValue();
+        }
+
         if (result.equals(inline)) {
             return result;
         }
@@ -191,6 +200,10 @@ public class VariableRenderer {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Optional<Object> renderObject(Object object, Map<String, Object> variables, boolean recursive) throws IllegalVariableEvaluationException {
+        if (object instanceof SecretValue secretValue) {
+            return Optional.of(secretValue.getValue());
+        }
+
         if (object instanceof Map map) {
             return Optional.of(this.render(map, variables, recursive));
         } else if (object instanceof List list) {
