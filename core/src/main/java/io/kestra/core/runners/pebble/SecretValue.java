@@ -14,8 +14,6 @@ public final class SecretValue {
 
     /**
      * Creates a new SecretValue wrapping the given string.
-     *
-     * @param value the secret value to wrap
      * @return a new SecretValue instance
      */
     public static SecretValue of(String value) {
@@ -23,9 +21,7 @@ public final class SecretValue {
     }
 
     /**
-     * Returns the wrapped secret value.
-     *
-     * @return the secret value
+     * @return the wrapped secret value
      */
     public String getValue() {
         return value;
