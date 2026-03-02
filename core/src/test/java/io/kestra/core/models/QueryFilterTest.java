@@ -39,6 +39,12 @@ public class QueryFilterTest {
 
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.EQUALS).build(), Resource.EXECUTION),
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.NOT_EQUALS).build(), Resource.EXECUTION),
+            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.IN).build(), Resource.EXECUTION),
+            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.NOT_IN).build(), Resource.EXECUTION),
+            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.EQUALS).build(), Resource.FLOW),
+            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.NOT_EQUALS).build(), Resource.FLOW),
+            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.IN).build(), Resource.FLOW),
+            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.NOT_IN).build(), Resource.FLOW),
 
             Arguments.of(QueryFilter.builder().field(Field.NAMESPACE).operation(Op.EQUALS).build(), Resource.FLOW),
             Arguments.of(QueryFilter.builder().field(Field.NAMESPACE).operation(Op.NOT_EQUALS).build(), Resource.FLOW),
