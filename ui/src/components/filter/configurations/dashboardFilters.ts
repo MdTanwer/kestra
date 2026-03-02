@@ -47,6 +47,23 @@ export const useDashboardFilter = (): ComputedRef<FilterConfiguration> => {
                     searchable: true
                 },
                 {
+                    key: "scope",
+                    label: t("filter.scope.label"),
+                    description: t("filter.scope.description"),
+                    comparators: [
+                        Comparators.EQUALS,
+                        Comparators.NOT_EQUALS,
+                        Comparators.IN,
+                        Comparators.NOT_IN,
+                    ],
+                    valueType: "multi-select",
+                    valueProvider: async () => {
+                        const {VALUES} = useValues("dashboard");
+                        return VALUES.SCOPES;
+                    },
+                    showComparatorSelection: true
+                },
+                {
                     key: "timeRange",
                     label: t("filter.timeRange_dashboard.label"),
                     description: t("filter.timeRange_dashboard.description"),
