@@ -218,8 +218,6 @@ public class QueryFilterTest {
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.LESS_THAN).build(), Resource.EXECUTION),
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.GREATER_THAN_OR_EQUAL_TO).build(), Resource.EXECUTION),
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.LESS_THAN_OR_EQUAL_TO).build(), Resource.EXECUTION),
-            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.IN).build(), Resource.EXECUTION),
-            Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.NOT_IN).build(), Resource.EXECUTION),
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.STARTS_WITH).build(), Resource.EXECUTION),
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.ENDS_WITH).build(), Resource.EXECUTION),
             Arguments.of(QueryFilter.builder().field(Field.SCOPE).operation(Op.CONTAINS).build(), Resource.EXECUTION),

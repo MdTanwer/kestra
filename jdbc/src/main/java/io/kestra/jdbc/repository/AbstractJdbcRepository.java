@@ -467,42 +467,17 @@ public abstract class AbstractJdbcRepository {
 
     private Condition applyScopeCondition(Object value, QueryFilter.Op operation) {
         List<FlowScope> flowScopes = Enums.fromList(value, FlowScope.class);
+        if (flowScopes.size() != 1) {
+            throw new InvalidQueryFiltersException("Exactly one scope is required for SCOPE filter (EQUALS, NOT_EQUALS, IN, NOT_IN)");
+        }
+        FlowScope scope = flowScopes.getFirst();
         String systemNamespace = this.kestraConfig.getSystemFlowNamespace();
+        Condition isUser = field("namespace").ne(systemNamespace);
+        Condition isSystem = field("namespace").eq(systemNamespace);
 
         return switch (operation) {
-            case EQUALS, NOT_EQUALS -> {
-                if (flowScopes.size() != 1) {
-                    throw new InvalidQueryFiltersException("Exactly one scope is required for EQUALS and NOT_EQUALS");
-                }
-                FlowScope scope = flowScopes.getFirst();
-                Condition isUser = field("namespace").ne(systemNamespace);
-                Condition isSystem = field("namespace").eq(systemNamespace);
-                yield operation == Op.EQUALS
-                    ? (FlowScope.USER.equals(scope) ? isUser : isSystem)
-                    : (FlowScope.USER.equals(scope) ? isSystem : isUser);
-            }
-            case IN -> {
-                if (flowScopes.isEmpty()) {
-                    yield DSL.falseCondition();
-                }
-                boolean includeUser = flowScopes.contains(FlowScope.USER);
-                boolean includeSystem = flowScopes.contains(FlowScope.SYSTEM);
-                if (includeUser && includeSystem) {
-                    yield DSL.noCondition();
-                }
-                yield includeUser ? field("namespace").ne(systemNamespace) : field("namespace").eq(systemNamespace);
-            }
-            case NOT_IN -> {
-                if (flowScopes.isEmpty()) {
-                    yield DSL.noCondition();
-                }
-                boolean excludeUser = flowScopes.contains(FlowScope.USER);
-                boolean excludeSystem = flowScopes.contains(FlowScope.SYSTEM);
-                if (excludeUser && excludeSystem) {
-                    yield DSL.falseCondition();
-                }
-                yield excludeUser ? field("namespace").eq(systemNamespace) : field("namespace").ne(systemNamespace);
-            }
+            case EQUALS, IN -> FlowScope.USER.equals(scope) ? isUser : isSystem;
+            case NOT_EQUALS, NOT_IN -> FlowScope.USER.equals(scope) ? isSystem : isUser;
             default -> throw new InvalidQueryFiltersException("Unsupported operation for SCOPE: " + operation);
         };
     }

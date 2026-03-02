@@ -56,7 +56,7 @@ export const useDashboardFilter = (): ComputedRef<FilterConfiguration> => {
                         Comparators.IN,
                         Comparators.NOT_IN,
                     ],
-                    valueType: "multi-select",
+                    valueType: "select",
                     valueProvider: async () => {
                         const {VALUES} = useValues("dashboard");
                         return VALUES.SCOPES;
