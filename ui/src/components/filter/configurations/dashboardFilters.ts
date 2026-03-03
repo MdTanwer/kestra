@@ -64,6 +64,20 @@ export const useDashboardFilter = (): ComputedRef<FilterConfiguration> => {
                     showComparatorSelection: true
                 },
                 {
+                    key: "inputs",
+                    label: t("filter.inputs.label"),
+                    description: t("filter.inputs.description"),
+                    comparators: [
+                        Comparators.EQUALS,
+                        Comparators.NOT_EQUALS,
+                        Comparators.IN,
+                        Comparators.NOT_IN,
+                        Comparators.CONTAINS,
+                    ],
+                    valueType: "text",
+                    showComparatorSelection: true
+                },
+                {
                     key: "timeRange",
                     label: t("filter.timeRange_dashboard.label"),
                     description: t("filter.timeRange_dashboard.description"),

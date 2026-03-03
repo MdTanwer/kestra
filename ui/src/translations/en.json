@@ -1842,6 +1842,10 @@
             "label": "Flow ID",
             "description": "Filter by flow ID"
         },
+        "inputs": {
+            "label": "Inputs",
+            "description": "Filter by flow input IDs"
+        },
         "kind": {
             "label": "Kind",
             "description": "Filter by execution kind"
