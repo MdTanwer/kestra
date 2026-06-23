@@ -103,6 +103,7 @@ public class VariableRenderer {
         try {
             PebbleTemplate compiledTemplate = this.pebbleEngine().getLiteralTemplate((String) result);
 // original codejhfbjhfbjf
+ejbf
             try {
                 OutputWriter writer = stringify ? new JsonWriter() : new TypedObjectWriter();
                 compiledTemplate.evaluate(writer, variables);
